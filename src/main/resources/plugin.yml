@@ -1,0 +1,10 @@
+name: Spigorigins
+version: '${project.version}'
+main: com.rdactive.spigorigins.Spigorigins
+api-version: 1.19
+website: 3rdactive.com
+commands:
+  origin:
+    description: Opens the origin menu.
+    usage: /origin
+    permission: 0
