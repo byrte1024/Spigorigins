@@ -3,6 +3,7 @@ package com.rdactive.spigorigins.Origins;
 import com.rdactive.spigorigins.Asigner;
 import com.rdactive.spigorigins.Origin;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -15,17 +16,20 @@ public class Fox extends Origin {
     }
 
     @Override
-    public void applyEffects(Player player, Asigner asigner, Plugin originPL) {
+    public void applyEffects(Player player, Asigner asigner) {
+        player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0.175);
+        if(player.getSaturation()>10){
+            player.setSaturation(10);
+        }
+    }
+
+    @Override
+    public void onOriginSelect(Player player, Asigner asigner) {
 
     }
 
     @Override
-    public void onOriginSelect(Player player, Asigner asigner, Plugin originPL) {
-
-    }
-
-    @Override
-    public void onOriginLeave(Player player, Asigner asigner, Plugin originPL) {
+    public void onOriginLeave(Player player, Asigner asigner) {
 
     }
 }

@@ -25,17 +25,17 @@ public class Human extends Origin {
     }
 
     @Override
-    public void applyEffects(Player player, Asigner asigner, Plugin originPL) {
+    public void applyEffects(Player player, Asigner asigner) {
 
     }
 
     @Override
-    public void onOriginSelect(Player player, Asigner asigner, Plugin originPL) {
+    public void onOriginSelect(Player player, Asigner asigner) {
 
     }
 
     @Override
-    public void onOriginLeave(Player player, Asigner asigner, Plugin originPL) {
+    public void onOriginLeave(Player player, Asigner asigner) {
 
     }
 }

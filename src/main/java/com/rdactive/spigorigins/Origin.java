@@ -1,6 +1,7 @@
 package com.rdactive.spigorigins;
 
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -25,9 +26,9 @@ public abstract class Origin {
     protected List<String> Disadvantages; // The list of all disadvantages for the origin. try not to include these letters: []{}.,;:&% these wont break it. but might not render in your text
     protected Material Icon; // The icon displayed in the select menu | it is important that the material used is an ITEM material. so for example WALL_TORCH will not work as it cannot be obtained as an item
     protected char emojNam; // The emoji associated with the origin (for resource packs) | do not insert regular emojis! insert either unicode characters that minecraft renders like emojis. or a character changed with a resource pack. you can leave this empty by entering ' ' as the input
-    public abstract void applyEffects(Player player, Asigner asigner, Plugin originPL); // This function is called every 10 ticks. use this to apply the effects for the origin
-    public abstract void onOriginSelect(Player player,Asigner asigner,Plugin originPL); // This function is called when a player switches to this origin
-    public abstract void onOriginLeave(Player player,Asigner asigner,Plugin originPL); // This function is called when a player switches from this origin
+    public abstract void applyEffects(Player player, Asigner asigner); // This function is called every 10 ticks. use this to apply the effects for the origin
+    public abstract void onOriginSelect(Player player,Asigner asigner); // This function is called when a player switches to this origin
+    public abstract void onOriginLeave(Player player,Asigner asigner); // This function is called when a player switches from this origin
 
 
     public char getEmojNam()// Retrieves the emoji name of the origin
@@ -43,10 +44,13 @@ public abstract class Origin {
 
 
 
-    static public void resetEffects(Player player, Asigner asigner, Plugin originPL) // Used to reset all active effects (called when switching origins and joining the server)
+    static public void resetEffects(Player player, Asigner asigner) // Used to reset all active effects (called when switching origins and joining the server)
 
     {
-
+        player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20);
+        player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(1);
+        player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0.1);
+        //player.getAttribute(Attribute.GENERIC_FLYING_SPEED).setBaseValue(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue());
     }
     public String getDescription() // Retrieves the description of the origin. if it includes these letters: []{}.,;:&% it is possible you are not getting the full string
     {

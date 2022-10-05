@@ -2,19 +2,25 @@ package com.rdactive.spigorigins;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryInteractEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.List;
 import java.util.Objects;
 
 public class EventListener implements Listener {
+
     @EventHandler(priority = EventPriority.HIGH)
     public void PlayerJoinEvent(PlayerJoinEvent event){
         Player player = event.getPlayer();
@@ -92,14 +98,18 @@ public class EventListener implements Listener {
                     player.sendMessage(ChatColor.RED + "<== you are already this origin! you cant switch to something you are! ==>");
                 }
                 else {
-                    if (origin.getID() == OriginManager.getDefaultOrigin().getID()) {
+                    if (asigner.getOrigin() == OriginManager.getDefaultOrigin().getID()) {
                         player.closeInventory();
+                        Origin.resetEffects(player,asigner);
+                        asigner.setOrigin(origin.getID());
                         player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + " <==================================>");
                         player.sendMessage(ChatColor.RESET + "You are a: " + ChatColor.GREEN + ChatColor.BOLD + origin.getVisibleName());
                         player.sendMessage(ChatColor.RESET + "" + ChatColor.GRAY + ChatColor.ITALIC + origin.getDescription());
                     } else {
                         if (player.getLevel() > 29) {
                             player.closeInventory();
+                            Origin.resetEffects(player,asigner);
+                            asigner.setOrigin(origin.getID());
                             player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + " <==================================>");
                             player.sendMessage(ChatColor.RESET + "You changed into a: " + ChatColor.GREEN + ChatColor.BOLD + origin.getVisibleName());
                             player.sendMessage(ChatColor.RESET + "" + ChatColor.GRAY + ChatColor.ITALIC + origin.getDescription());
@@ -117,5 +127,34 @@ public class EventListener implements Listener {
             }
         }
 
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void PlayerTakeDamageEvent(EntityDamageEvent event){
+        if(event.getEntityType()== EntityType.PLAYER){
+            Player player = (Player) event.getEntity();
+            Asigner asigner = OriginManager.getAsigner(player,true);
+            if(asigner.getOrigin()=="BLAZE"){
+                if(event.getCause()== EntityDamageEvent.DamageCause.FIRE_TICK||event.getCause()== EntityDamageEvent.DamageCause.FIRE||event.getCause()== EntityDamageEvent.DamageCause.LAVA){
+                    event.setCancelled(true);
+
+                }
+            }
+        }
+        else{
+
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void PlayerEatEvent(PlayerItemConsumeEvent event){
+        Player player = event.getPlayer();
+        Asigner asigner = OriginManager.getAsigner(player,true);
+        if(asigner.getOrigin()=="FOX"){
+            if(event.getItem().getType()!=Material.SWEET_BERRIES){
+                event.setCancelled(true);
+                player.addPotionEffect(new PotionEffect(PotionEffectType.POISON,80,1));
+            }
+        }
     }
 }
