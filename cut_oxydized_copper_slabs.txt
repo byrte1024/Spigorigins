@@ -7,6 +7,8 @@ I'm not sure why cut_oxydized_copper_slabs is funny, but I guess it has somethin
 
 My friend thinks it's funny because it's a play on words. When you cut copper, it becomes oxidized. So the phrase "cut_oxydized_copper_slabs" is basically saying "cut the F-ing copper!"
 
+i still dont get it...
+
 cut_oxydized_copper_slabs
 cut_oxydized_copper_slabs
 cut_oxydized_copper_slabs
