@@ -143,7 +143,55 @@ public class OriginManager {
             }
 
         }
+        ItemStack itmOrg = new ItemStack( getDefaultOrigin().getIcon());
+        ItemMeta itemMeta = itmOrg.getItemMeta();
+        assert itemMeta != null;
+        itemMeta.setDisplayName(ChatColor.GOLD+"<==- "+ChatColor.GREEN+ getDefaultOrigin().getVisibleName()+ChatColor.GREEN+" -==>");
+        List<String> lore = new ArrayList<>();
+        lore.add(getDefaultOrigin().getID());
+        for(int l = 0; l < getDefaultOrigin().getAdvantages().size(); l++){
+            lore.add(ChatColor.BOLD+""+ChatColor.GREEN+"+ "+ChatColor.RESET+ChatColor.WHITE+ getDefaultOrigin().getAdvantages().get(l));
+        }
+        for(int l = 0; l < getDefaultOrigin().getDisadvantages().size(); l++){
+            lore.add(ChatColor.BOLD+""+ChatColor.GREEN+"+ "+ChatColor.RESET+ChatColor.WHITE+ getDefaultOrigin().getDisadvantages().get(l));
+        }
+
+
+        itemMeta.setLore(lore);
+        itemMeta.setCustomModelData(101);
+
+        itmOrg.setItemMeta(itemMeta);
+        inventory.setItem(26,itmOrg);
 
         player.openInventory(inventory);
+    }
+
+    public static Origin getOrigin(Player player){
+        Asigner asigner = getAsigner(player,true);
+        if(asigner==null){
+            return null;
+        }
+        for(int i = 0; i < getOriginList().size(); i++){
+            if(getOriginList().get(i).getID()==asigner.getOrigin()){
+                return getOriginList().get(i);
+            }
+        }
+        return null;
+    }
+    public static Origin getOrigin(Asigner asigner){
+        for(int i = 0; i < getOriginList().size(); i++){
+            if(getOriginList().get(i).getID()==asigner.getOrigin()){
+                return getOriginList().get(i);
+            }
+        }
+        return null;
+    }
+    public static Origin getOrigin(String ID){
+        for(int i = 0; i < getOriginList().size(); i++){
+            if(getOriginList().get(i).getID()==ID){
+                return getOriginList().get(i);
+            }
+        }
+        return null;
     }
 }
