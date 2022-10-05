@@ -126,7 +126,7 @@ public class OriginManager {
                 assert itemMeta != null;
                 itemMeta.setDisplayName(ChatColor.GOLD+"<==- "+ChatColor.GREEN+originList.get(i).getVisibleName()+ChatColor.GREEN+" -==>");
                 List<String> lore = new ArrayList<>();
-                lore.add(ChatColor.ITALIC+""+ChatColor.GRAY+originList.get(i).getID());
+                lore.add(originList.get(i).getID());
                 for(int l = 0; l < originList.get(i).getAdvantages().size(); l++){
                     lore.add(ChatColor.BOLD+""+ChatColor.GREEN+"+ "+ChatColor.RESET+ChatColor.WHITE+originList.get(i).getAdvantages().get(l));
                 }

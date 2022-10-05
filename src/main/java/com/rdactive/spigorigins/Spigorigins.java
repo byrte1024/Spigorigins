@@ -16,7 +16,6 @@ public final class Spigorigins extends JavaPlugin {
         OriginManager.registerOrigin(new BlazeBorn());
         OriginManager.registerOrigin(new Fox());
         OriginManager.registerOrigin(new Goblin());
-        OriginManager.registerOrigin(new Human());
         OriginManager.registerOrigin(new Void());
         OriginManager.registerOrigin(new Werewolf());
     }

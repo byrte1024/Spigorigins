@@ -10,7 +10,7 @@ import java.util.Arrays;
 
 public class Void extends Origin {
     public Void(){
-        super("V.O.I.D","VOID","These creatures are a scientific experiment made by [REDACTED] for [CENSORED] because of [TOP SECRET]", Arrays.asList(new String[]{"50% faster","50% stronger","5 more hearts","Death by void wont kill you"}), Arrays.asList(new String[]{"Permanent blindness"}), Material.BLACK_STAINED_GLASS_PANE,' ');
+        super("V.O.I.D","VOID","These creatures are a scientific experiment made by [REDACTED] for [CENSORSHIP] because of [TOP SECRET]", Arrays.asList(new String[]{"50% faster","50% stronger","5 more hearts","Death by void wont kill you"}), Arrays.asList(new String[]{"Permanent blindness"}), Material.BLACK_CONCRETE_POWDER,' ');
     }
 
     @Override
