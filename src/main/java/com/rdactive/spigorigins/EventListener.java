@@ -67,7 +67,8 @@ public class EventListener implements Listener {
             if(event.getView().getTitle().equals("Select origin")){
                 Origin origin = OriginManager.getOrigin(itm.getItemMeta().getLore().get(0));
                 if(origin==null){
-                    player.sendMessage(ChatColor.RED+" <== The origin you clicked on was not found! this could be a server error or a refresh. try again later. ==>");
+                    player.sendMessage(ChatColor.RED+" <== The origin you clicked on was not found! this could be a server error or a refresh. try again later. ==>\n");
+                    player.sendMessage(itm.getItemMeta().getLore().get(0));
                     player.closeInventory();
                     return;
                 }
@@ -76,7 +77,7 @@ public class EventListener implements Listener {
                     player.sendMessage(ChatColor.RED+" <== Asigner not found! generating... ==>");
                     OriginManager.createAsigner(player);
                     if(OriginManager.getAsigner(player,false)==null){
-                        player.kickPlayer(ChatColor.RED+" <== Asigner generation failed. all things related to the origins will not be active for you. contact moderators for help ==>");
+                        player.kickPlayer(ChatColor.RED+" <== Asigner generation failed. contact moderators for help ==>");
                         return;
                     }
                     else{
@@ -87,23 +88,26 @@ public class EventListener implements Listener {
 
                 }
                 assert asigner != null;
-                if(origin.getID()==OriginManager.getDefaultOrigin().getID()){
-                   player.closeInventory();
-                   player.sendMessage(ChatColor.GREEN+""+ChatColor.BOLD+" <==================================>");
-                   player.sendMessage(ChatColor.RESET+"You are now a: "+ChatColor.GREEN+ChatColor.BOLD+origin.getVisibleName());
-                   player.sendMessage(ChatColor.RESET+""+ChatColor.GRAY+ChatColor.ITALIC+origin.getDescription());
+                if(origin.getID()==asigner.getOrigin()){
+                    player.sendMessage(ChatColor.RED + "<== you are already this origin! you cant switch to something you are! ==>");
                 }
-                else{
-                    if(player.getLevel()>29) {
+                else {
+                    if (origin.getID() == OriginManager.getDefaultOrigin().getID()) {
                         player.closeInventory();
                         player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + " <==================================>");
-                        player.sendMessage(ChatColor.RESET + "You changed into a: " + ChatColor.GREEN + ChatColor.BOLD + origin.getVisibleName());
+                        player.sendMessage(ChatColor.RESET + "You are a: " + ChatColor.GREEN + ChatColor.BOLD + origin.getVisibleName());
                         player.sendMessage(ChatColor.RESET + "" + ChatColor.GRAY + ChatColor.ITALIC + origin.getDescription());
-                        player.setLevel(player.getLevel()-30);
-                    }
-                    else{
-                        player.closeInventory();
-                        player.sendMessage(ChatColor.RED+ "<== you already picked an origin! to pick an origin again costs 30 levels! ==>");
+                    } else {
+                        if (player.getLevel() > 29) {
+                            player.closeInventory();
+                            player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + " <==================================>");
+                            player.sendMessage(ChatColor.RESET + "You changed into a: " + ChatColor.GREEN + ChatColor.BOLD + origin.getVisibleName());
+                            player.sendMessage(ChatColor.RESET + "" + ChatColor.GRAY + ChatColor.ITALIC + origin.getDescription());
+                            player.setLevel(player.getLevel() - 30);
+                        } else {
+                            player.closeInventory();
+                            player.sendMessage(ChatColor.RED + "<== you already picked an origin! to pick an origin again costs 30 levels! ==>");
+                        }
                     }
                 }
 

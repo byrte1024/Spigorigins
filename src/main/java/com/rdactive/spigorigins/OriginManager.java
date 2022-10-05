@@ -9,6 +9,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,10 +27,12 @@ public class OriginManager {
     }
     public static void createAsigner(String playerName){
         Asigner as = new Asigner(playerName);
+        as.setOrigin(getDefaultOrigin().getID());
         AsignerList.add(as);
     }
     public static void createAsigner(Player player){
         Asigner as = new Asigner(player.getName());
+        as.setOrigin(getDefaultOrigin().getID());
         AsignerList.add(as);
     }
     public static void createAsigner(String playerName,String originName){
@@ -172,25 +175,40 @@ public class OriginManager {
             return null;
         }
         for(int i = 0; i < getOriginList().size(); i++){
-            if(getOriginList().get(i).getID()==asigner.getOrigin()){
+            if(getOriginList().get(i).getID().equalsIgnoreCase(asigner.getOrigin())){
                 return getOriginList().get(i);
             }
+        }
+        if(asigner.getOrigin().equalsIgnoreCase(getDefaultOrigin().getID())){
+            return getDefaultOrigin();
         }
         return null;
     }
     public static Origin getOrigin(Asigner asigner){
         for(int i = 0; i < getOriginList().size(); i++){
-            if(getOriginList().get(i).getID()==asigner.getOrigin()){
+            if(getOriginList().get(i).getID().equalsIgnoreCase(asigner.getOrigin())){
                 return getOriginList().get(i);
             }
+        }
+        if(asigner.getOrigin().equalsIgnoreCase(getDefaultOrigin().getID())){
+            return getDefaultOrigin();
         }
         return null;
     }
     public static Origin getOrigin(String ID){
         for(int i = 0; i < getOriginList().size(); i++){
-            if(getOriginList().get(i).getID()==ID){
+            if(getOriginList().get(i).getID().equalsIgnoreCase(ID)){
                 return getOriginList().get(i);
             }
+            else{
+                Bukkit.broadcastMessage(ID+"!="+getOriginList().get(i).getID());
+            }
+        }
+        if(ID.equalsIgnoreCase(getDefaultOrigin().getID())){
+            return getDefaultOrigin();
+        }
+        else{
+            Bukkit.broadcastMessage(ID+"!="+getDefaultOrigin().getID());
         }
         return null;
     }
