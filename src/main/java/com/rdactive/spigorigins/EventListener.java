@@ -1,5 +1,6 @@
 package com.rdactive.spigorigins;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -16,6 +17,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.io.IOException;
+import java.util.Collection;
 import java.util.Objects;
 
 public class EventListener implements Listener {
@@ -24,7 +27,7 @@ public class EventListener implements Listener {
     public void PlayerJoinEvent(PlayerJoinEvent event){
         Player player = event.getPlayer();
         //player.sendMessage(ChatColor.YELLOW+" <== fetching asigner... ==> ");
-        Asigner asigner = OriginManager.getAsigner(player,true);
+        Asigner asigner = OriginManager.getAsigner(player,false);
         if(asigner==null){
             asigner=OriginManager.createAsignerFromConfig(player);
             if(asigner==null){
@@ -143,7 +146,12 @@ public class EventListener implements Listener {
         }
     }
     @EventHandler
-    public void WorldSaveEvent(WorldSaveEvent event){
-
+    public void WorldSaveEvent(WorldSaveEvent event) throws IOException {
+        Bukkit.broadcastMessage(ChatColor.GRAY+""+ChatColor.ITALIC+"Saving config...");
+        OriginManager.getAsignerList().forEach(asigner -> {
+            Spigorigins.mainData.set(asigner.getPlayerName()+".origin",asigner.getOrigin());
+        });
+        Spigorigins.mainData.save(Spigorigins.mainDataFile);
+        Spigorigins.mainConf.save(Spigorigins.mainConfFile);
     }
 }

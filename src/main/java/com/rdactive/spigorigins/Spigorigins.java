@@ -5,6 +5,7 @@ import com.rdactive.spigorigins.Origins.*;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -13,30 +14,45 @@ import java.util.Objects;
 
 public final class Spigorigins extends JavaPlugin {
 
+    public static File mainConfFile;
+
+    public static File mainDataFile;
+
     public static FileConfiguration mainConf;
 
     public static FileConfiguration mainData;
     @Override
     public void onEnable() {
-        File mainConfFile = new File(Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("Spigorigins")).getDataFolder(), "config.yml");
-        mainConf = YamlConfiguration.loadConfiguration(mainConfFile);
-        File mainDataFile = new File(Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("Spigorigins")).getDataFolder(), "playerData.yml");
-        mainData = YamlConfiguration.loadConfiguration(mainDataFile);
+
         Objects.requireNonNull(this.getCommand("origin")).setExecutor(new OriginMenuCommand(this));
         getServer().getPluginManager().registerEvents(new EventListener(), this);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
             List<Asigner> asignerList = OriginManager.getAsignerList();
             asignerList.forEach(asigner -> {
                 if(asigner.getOrigin()!=null){
-                    Objects.requireNonNull(OriginManager.getOrigin(asigner)).applyEffects(Bukkit.getPlayer(asigner.getPlayerName()),asigner);
+                    Player player = Bukkit.getPlayer(asigner.getPlayerName());
+                    assert player != null;
+                    assert player.isOnline();
+                    assert !player.isDead();
+                    Objects.requireNonNull(OriginManager.getOrigin(asigner)).applyEffects(player,asigner);
                 }
             });
         },0,10);
+
+    }
+
+    @Override
+    public void onLoad() {
+        mainConfFile = new File(getDataFolder(), "config.yml");
+        mainConf = YamlConfiguration.loadConfiguration(mainConfFile);
+        mainDataFile = new File(getDataFolder(), "playerData.yml");
+        mainData = YamlConfiguration.loadConfiguration(mainDataFile);
         if(!mainConfFile.exists()){
             saveResource("config.yml",false);
         }
         if(!mainDataFile.exists()){
             saveResource("playerData.yml",false);
+
         }
 
         if(mainConf.getBoolean("Origins.BlazeBorn")) {
@@ -54,11 +70,7 @@ public final class Spigorigins extends JavaPlugin {
         if(mainConf.getBoolean("Origins.Werewolf")) {
             OriginManager.registerOrigin(new Werewolf());
         }
-
-
-
     }
-
 
     @Override
     public void onDisable() {
