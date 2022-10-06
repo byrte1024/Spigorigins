@@ -9,6 +9,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,30 +30,30 @@ public class OriginManager {
         as.setOrigin(getDefaultOrigin().getID());
         AsignerList.add(as);
     }
-    public static void createAsigner(Player player){
+    public static void createAsigner(@NotNull Player player){
         Asigner as = new Asigner(player.getName());
         as.setOrigin(getDefaultOrigin().getID());
         AsignerList.add(as);
     }
-    public static Asigner createAsigner(String playerName,String originName){
+    public static @NotNull Asigner createAsigner(String playerName, String originName){
         Asigner as = new Asigner(playerName);
         as.setOrigin(originName);
         AsignerList.add(as);
         return as;
     }
-    public static Asigner createAsigner(Player player, String originName){
+    public static @NotNull Asigner createAsigner(@NotNull Player player, String originName){
         Asigner as = new Asigner(player.getName());
         as.setOrigin(originName);
         AsignerList.add(as);
         return as;
     }
-    public static Asigner createAsigner(String playerName,Origin origin){
+    public static @NotNull Asigner createAsigner(String playerName, @NotNull Origin origin){
         Asigner as = new Asigner(playerName);
         as.setOrigin(origin.getID());
         AsignerList.add(as);
         return as;
     }
-    public static Asigner createAsigner(Player player,Origin origin){
+    public static @NotNull Asigner createAsigner(@NotNull Player player, @NotNull Origin origin){
         Asigner as = new Asigner(player.getName());
         as.setOrigin(origin.getID());
         AsignerList.add(as);
@@ -59,7 +61,7 @@ public class OriginManager {
     }
 
 
-    public static Asigner getAsigner(String name,boolean shouldGen){
+    public static @Nullable Asigner getAsigner(String name, boolean shouldGen){
         for (Asigner asigner : AsignerList) {
             if (Objects.equals(asigner.getPlayerName(), name)) {
                 return asigner;
@@ -75,23 +77,24 @@ public class OriginManager {
         }
         return null;
     }
-    public static Asigner getAsigner(Player name,boolean shouldGen){
+
+    public static @Nullable Asigner getAsigner(Player name, boolean shouldGen){
         for (Asigner asigner : AsignerList) {
-            if (name.getName()  ==asigner.getPlayerName()) {
+            if (name.getName().equals(asigner.getPlayerName())) {
                 return asigner;
             }
         }
         if(shouldGen){
             createAsigner(name);
             for (Asigner asigner : AsignerList) {
-                if (name.getName()==asigner.getPlayerName()) {
+                if (name.getName().equals(asigner.getPlayerName())) {
                     return asigner;
                 }
             }
         }
         return null;
     }
-    public static Asigner createAsignerFromConfig(Player player){
+    public static @Nullable Asigner createAsignerFromConfig(@NotNull Player player){
         String org = Spigorigins.mainData.getString(player.getName()+".origin");
         if(org==null){
             return null;
@@ -100,7 +103,7 @@ public class OriginManager {
             return createAsigner(player,org);
         }
     }
-    public static Asigner createAsignerFromConfig(String name){
+    public static @Nullable Asigner createAsignerFromConfig(String name){
         String org = Spigorigins.mainData.getString(name+".origin");
         if(org==null){
             return null;
@@ -189,7 +192,7 @@ public class OriginManager {
         player.openInventory(inventory);
     }
 
-    public static Origin getOrigin(Player player){
+    public static @Nullable Origin getOrigin(Player player){
         Asigner asigner = getAsigner(player,true);
         if(asigner==null){
             return null;
@@ -204,7 +207,7 @@ public class OriginManager {
         }
         return null;
     }
-    public static Origin getOrigin(Asigner asigner){
+    public static @Nullable Origin getOrigin(Asigner asigner){
         for(int i = 0; i < getOriginList().size(); i++){
             if(getOriginList().get(i).getID().equalsIgnoreCase(asigner.getOrigin())){
                 return getOriginList().get(i);
@@ -215,7 +218,7 @@ public class OriginManager {
         }
         return null;
     }
-    public static Origin getOrigin(String ID){
+    public static @Nullable Origin getOrigin(String ID){
         for(int i = 0; i < getOriginList().size(); i++){
             if(getOriginList().get(i).getID().equalsIgnoreCase(ID)){
                 return getOriginList().get(i);

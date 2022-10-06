@@ -4,11 +4,8 @@ import com.rdactive.spigorigins.Asigner;
 import com.rdactive.spigorigins.Origin;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Collections;
 
 public class Human extends Origin {
     public Human(){
@@ -16,8 +13,8 @@ public class Human extends Origin {
                 "Human"
                 ,"HUMAN"
                 ,"Just your regular ol' human"
-                ,Arrays.asList("No Advantages")
-                ,Arrays.asList("No Disadvantages")
+                , Collections.singletonList("No Advantages")
+                , Collections.singletonList("No Disadvantages")
                 , Material.GRASS_BLOCK
                 ,' '
         );

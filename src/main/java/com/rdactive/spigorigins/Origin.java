@@ -3,10 +3,9 @@ package com.rdactive.spigorigins;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 
 import java.util.List;
+import java.util.Objects;
 
 public abstract class Origin {
 
@@ -47,9 +46,9 @@ public abstract class Origin {
     static public void resetEffects(Player player, Asigner asigner) // Used to reset all active effects (called when switching origins and joining the server)
 
     {
-        player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(20);
-        player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(1);
-        player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(0.1);
+        Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(20);
+        Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)).setBaseValue(1);
+        Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)).setBaseValue(0.1);
         //player.getAttribute(Attribute.GENERIC_FLYING_SPEED).setBaseValue(player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue());
     }
     public String getDescription() // Retrieves the description of the origin. if it includes these letters: []{}.,;:&% it is possible you are not getting the full string

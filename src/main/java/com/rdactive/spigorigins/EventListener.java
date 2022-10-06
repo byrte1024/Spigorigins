@@ -9,7 +9,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.world.WorldSaveEvent;
@@ -17,7 +16,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.List;
 import java.util.Objects;
 
 public class EventListener implements Listener {
@@ -35,15 +33,13 @@ public class EventListener implements Listener {
                 if(OriginManager.getAsigner(player,false)==null){
                     player.kickPlayer(ChatColor.RED+" <== Asigner generation failed. contact moderators for help ==>");
                 }
-                else{
-                    //player.sendMessage(ChatColor.GREEN+" <== Asigner Generated!... ==>");
-                }
+                //player.sendMessage(ChatColor.GREEN+" <== Asigner Generated!... ==>");
+
             }
 
         }
-        else{
-            //player.sendMessage(ChatColor.GREEN+" <== Asigner found! ==> ");
-        }
+        //player.sendMessage(ChatColor.GREEN+" <== Asigner found! ==> ");
+
         assert asigner != null;
         //player.sendMessage(ChatColor.GREEN+" <== Asigner data of: ''"+asigner.getOrigin()+"'' detected ==> ");
 
@@ -66,17 +62,11 @@ public class EventListener implements Listener {
 
         if(itm.getItemMeta().getCustomModelData()==100){
             event.setCancelled(true);
-            if(event.getView().getTitle().equals("Select origin")){
-
-            }
-            else{
-                //itm.setType(Material.AIR);
-            }
         }
         else if(itm.getItemMeta().getCustomModelData()==101){
             event.setCancelled(true);
             if(event.getView().getTitle().equals("Select origin")){
-                Origin origin = OriginManager.getOrigin(itm.getItemMeta().getLore().get(0));
+                Origin origin = OriginManager.getOrigin(Objects.requireNonNull(itm.getItemMeta().getLore()).get(0));
                 if(origin==null){
                     player.sendMessage(ChatColor.RED+" <== The origin you clicked on was not found! this could be a server error or a refresh. try again later. ==>\n");
                     player.sendMessage(itm.getItemMeta().getLore().get(0));
@@ -92,12 +82,11 @@ public class EventListener implements Listener {
                     }
 
                 }
-                assert asigner != null;
-                if(origin.getID()==asigner.getOrigin()){
+                if(Objects.equals(origin.getID(), asigner.getOrigin())){
                     player.sendMessage(ChatColor.RED + "<== you are already this origin! you cant switch to something you are! ==>");
                 }
                 else {
-                    if (asigner.getOrigin() == OriginManager.getDefaultOrigin().getID()) {
+                    if (Objects.equals(asigner.getOrigin(), OriginManager.getDefaultOrigin().getID())) {
                         player.closeInventory();
                         Origin.resetEffects(player,asigner);
                         asigner.setOrigin(origin.getID());
@@ -121,9 +110,7 @@ public class EventListener implements Listener {
                 }
 
             }
-            else{
-                //itm.setType(Material.AIR);
-            }
+
         }
 
     }
@@ -133,15 +120,13 @@ public class EventListener implements Listener {
         if(event.getEntityType()== EntityType.PLAYER){
             Player player = (Player) event.getEntity();
             Asigner asigner = OriginManager.getAsigner(player,true);
-            if(asigner.getOrigin()=="BLAZE"){
+            assert asigner != null;
+            if(Objects.equals(asigner.getOrigin(), "BLAZE")){
                 if(event.getCause()== EntityDamageEvent.DamageCause.FIRE_TICK||event.getCause()== EntityDamageEvent.DamageCause.FIRE||event.getCause()== EntityDamageEvent.DamageCause.LAVA){
                     event.setCancelled(true);
 
                 }
             }
-        }
-        else{
-
         }
     }
 
@@ -149,7 +134,8 @@ public class EventListener implements Listener {
     public void PlayerEatEvent(PlayerItemConsumeEvent event){
         Player player = event.getPlayer();
         Asigner asigner = OriginManager.getAsigner(player,true);
-        if(asigner.getOrigin()=="FOX"){
+        assert asigner != null;
+        if(Objects.equals(asigner.getOrigin(), "FOX")){
             if(event.getItem().getType()!=Material.SWEET_BERRIES){
                 event.setCancelled(true);
                 player.addPotionEffect(new PotionEffect(PotionEffectType.POISON,80,1));
