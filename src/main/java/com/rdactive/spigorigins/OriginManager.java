@@ -224,14 +224,14 @@ public class OriginManager {
                 return getOriginList().get(i);
             }
             else{
-                Bukkit.broadcastMessage(ID+"!="+getOriginList().get(i).getID());
+                //Bukkit.broadcastMessage(ID+"!="+getOriginList().get(i).getID());
             }
         }
         if(ID.equalsIgnoreCase(getDefaultOrigin().getID())){
             return getDefaultOrigin();
         }
         else{
-            Bukkit.broadcastMessage(ID+"!="+getDefaultOrigin().getID());
+            //Bukkit.broadcastMessage(ID+"!="+getDefaultOrigin().getID());
         }
         return null;
     }

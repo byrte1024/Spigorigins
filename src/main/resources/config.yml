@@ -7,3 +7,8 @@ Origins:
 Settings:
   OriginSwitchingCost: 30
 Messages:
+  OriginNotFound: " <== The origin you clicked on was not found! this could be a server error or a refresh. try again later. ==>"
+  AsignerGenFailed: " <== Asigner generation failed. contact moderators for help ==>"
+  OriginSamePick: "<== you are already this origin! you cant switch to something you are! ==>"
+  OriginPickHeader: " <==================================>"
+  OriginPickFailedCost: "<== you already picked an origin! to pick an origin again costs 30 levels! ==>"

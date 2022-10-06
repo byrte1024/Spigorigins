@@ -71,7 +71,7 @@ public class EventListener implements Listener {
             if(event.getView().getTitle().equals("Select origin")){
                 Origin origin = OriginManager.getOrigin(Objects.requireNonNull(itm.getItemMeta().getLore()).get(0));
                 if(origin==null){
-                    player.sendMessage(ChatColor.RED+" <== The origin you clicked on was not found! this could be a server error or a refresh. try again later. ==>\n");
+                    player.sendMessage(ChatColor.RED+Spigorigins.mainConf.getString("Messages.OriginNotFound")+"\n");
                     player.sendMessage(itm.getItemMeta().getLore().get(0));
                     player.closeInventory();
                     return;
@@ -80,20 +80,20 @@ public class EventListener implements Listener {
                 if(asigner==null){
                     asigner=OriginManager.createAsignerFromConfig(player);
                     if(asigner==null){
-                        player.kickPlayer(ChatColor.RED+" <== Asigner generation failed. contact moderators for help ==>");
+                        player.kickPlayer(ChatColor.RED+Spigorigins.mainConf.getString("Messages.AsignerGenFailed"));
                         return;
                     }
 
                 }
                 if(Objects.equals(origin.getID(), asigner.getOrigin())){
-                    player.sendMessage(ChatColor.RED + "<== you are already this origin! you cant switch to something you are! ==>");
+                    player.sendMessage(ChatColor.RED + Spigorigins.mainConf.getString("Messages.OriginSamePick"));
                 }
                 else {
                     if (Objects.equals(asigner.getOrigin(), OriginManager.getDefaultOrigin().getID())) {
                         player.closeInventory();
                         Origin.resetEffects(player,asigner);
                         asigner.setOrigin(origin.getID());
-                        player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + " <==================================>");
+                        player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + Spigorigins.mainConf.getString("Messages.OriginPickHeader"));
                         player.sendMessage(ChatColor.RESET + "You are a: " + ChatColor.GREEN + ChatColor.BOLD + origin.getVisibleName());
                         player.sendMessage(ChatColor.RESET + "" + ChatColor.GRAY + ChatColor.ITALIC + origin.getDescription());
                     } else {
@@ -101,13 +101,13 @@ public class EventListener implements Listener {
                             player.closeInventory();
                             Origin.resetEffects(player,asigner);
                             asigner.setOrigin(origin.getID());
-                            player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + " <==================================>");
+                            player.sendMessage(ChatColor.GREEN + "" + ChatColor.BOLD + Spigorigins.mainConf.getString("Messages.OriginPickHeader"));
                             player.sendMessage(ChatColor.RESET + "You changed into a: " + ChatColor.GREEN + ChatColor.BOLD + origin.getVisibleName());
                             player.sendMessage(ChatColor.RESET + "" + ChatColor.GRAY + ChatColor.ITALIC + origin.getDescription());
                             player.setLevel(player.getLevel() - 30);
                         } else {
                             player.closeInventory();
-                            player.sendMessage(ChatColor.RED + "<== you already picked an origin! to pick an origin again costs 30 levels! ==>");
+                            player.sendMessage(ChatColor.RED + Spigorigins.mainConf.getString("Messages.OriginPickFailedCost"));
                         }
                     }
                 }
@@ -147,7 +147,7 @@ public class EventListener implements Listener {
     }
     @EventHandler
     public void WorldSaveEvent(WorldSaveEvent event) throws IOException {
-        Bukkit.broadcastMessage(ChatColor.GRAY+""+ChatColor.ITALIC+"Saving config...");
+        //Bukkit.broadcastMessage(ChatColor.GRAY+""+ChatColor.ITALIC+"Saving config...");
         OriginManager.getAsignerList().forEach(asigner -> {
             Spigorigins.mainData.set(asigner.getPlayerName()+".origin",asigner.getOrigin());
         });

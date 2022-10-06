@@ -34,7 +34,9 @@ public final class Spigorigins extends JavaPlugin {
                     assert player != null;
                     assert player.isOnline();
                     assert !player.isDead();
-                    Objects.requireNonNull(OriginManager.getOrigin(asigner)).applyEffects(player,asigner);
+                    Origin origin = OriginManager.getOrigin(asigner);
+                    assert origin !=null;
+                    origin.applyEffects(player,asigner);
                 }
             });
         },0,10);
