@@ -18,8 +18,8 @@ public class OriginMenuCommand implements CommandExecutor {
             if(args.length>0&&player.isOp()){
                 Asigner asigner = OriginManager.getAsigner(player,true);
                 if(Objects.equals(args[0], "asi")){
-                    assert asigner != null;
                     player.sendMessage(asigner.getPlayerName());
+                    assert asigner != null;
                 }
                 if(Objects.equals(args[0], "AllAsi")){
                     player.sendMessage(OriginManager.getAsignerList().toString());

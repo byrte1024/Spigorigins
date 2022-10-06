@@ -12,6 +12,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.world.WorldSaveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -27,14 +28,18 @@ public class EventListener implements Listener {
         //player.sendMessage(ChatColor.YELLOW+" <== fetching asigner... ==> ");
         Asigner asigner = OriginManager.getAsigner(player,true);
         if(asigner==null){
-            player.sendMessage(ChatColor.RED+" <== Asigner not found! generating... ==>");
-            OriginManager.createAsigner(player);
-            if(OriginManager.getAsigner(player,false)==null){
-                player.kickPlayer(ChatColor.RED+" <== Asigner generation failed. all things related to the origins will not be active for you. contact moderators for help ==>");
+            asigner=OriginManager.createAsignerFromConfig(player);
+            if(asigner==null){
+                player.sendMessage(ChatColor.RED+" <== Asigner not found! generating... ==>");
+                OriginManager.createAsigner(player);
+                if(OriginManager.getAsigner(player,false)==null){
+                    player.kickPlayer(ChatColor.RED+" <== Asigner generation failed. contact moderators for help ==>");
+                }
+                else{
+                    //player.sendMessage(ChatColor.GREEN+" <== Asigner Generated!... ==>");
+                }
             }
-            else{
-                //player.sendMessage(ChatColor.GREEN+" <== Asigner Generated!... ==>");
-            }
+
         }
         else{
             //player.sendMessage(ChatColor.GREEN+" <== Asigner found! ==> ");
@@ -80,17 +85,11 @@ public class EventListener implements Listener {
                 }
                 Asigner asigner = OriginManager.getAsigner(player,true);
                 if(asigner==null){
-                    player.sendMessage(ChatColor.RED+" <== Asigner not found! generating... ==>");
-                    OriginManager.createAsigner(player);
-                    if(OriginManager.getAsigner(player,false)==null){
+                    asigner=OriginManager.createAsignerFromConfig(player);
+                    if(asigner==null){
                         player.kickPlayer(ChatColor.RED+" <== Asigner generation failed. contact moderators for help ==>");
                         return;
                     }
-                    else{
-                        //player.sendMessage(ChatColor.GREEN+" <== Asigner Generated!... ==>");
-                    }
-                }
-                else{
 
                 }
                 assert asigner != null;
@@ -156,5 +155,9 @@ public class EventListener implements Listener {
                 player.addPotionEffect(new PotionEffect(PotionEffectType.POISON,80,1));
             }
         }
+    }
+    @EventHandler
+    public void WorldSaveEvent(WorldSaveEvent event){
+
     }
 }

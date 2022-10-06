@@ -9,10 +9,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -35,25 +33,29 @@ public class OriginManager {
         as.setOrigin(getDefaultOrigin().getID());
         AsignerList.add(as);
     }
-    public static void createAsigner(String playerName,String originName){
+    public static Asigner createAsigner(String playerName,String originName){
         Asigner as = new Asigner(playerName);
         as.setOrigin(originName);
         AsignerList.add(as);
+        return as;
     }
-    public static void createAsigner(Player player,String originName){
+    public static Asigner createAsigner(Player player, String originName){
         Asigner as = new Asigner(player.getName());
         as.setOrigin(originName);
         AsignerList.add(as);
+        return as;
     }
-    public static void createAsigner(String playerName,Origin origin){
+    public static Asigner createAsigner(String playerName,Origin origin){
         Asigner as = new Asigner(playerName);
         as.setOrigin(origin.getID());
         AsignerList.add(as);
+        return as;
     }
-    public static void createAsigner(Player player,Origin origin){
+    public static Asigner createAsigner(Player player,Origin origin){
         Asigner as = new Asigner(player.getName());
         as.setOrigin(origin.getID());
         AsignerList.add(as);
+        return as;
     }
 
 
@@ -88,6 +90,24 @@ public class OriginManager {
             }
         }
         return null;
+    }
+    public static Asigner createAsignerFromConfig(Player player){
+        String org = Spigorigins.mainData.getString(player.getName()+".origin");
+        if(org==null){
+            return null;
+        }
+        else{
+            return createAsigner(player,org);
+        }
+    }
+    public static Asigner createAsignerFromConfig(String name){
+        String org = Spigorigins.mainData.getString(name+".origin");
+        if(org==null){
+            return null;
+        }
+        else{
+            return createAsigner(name,org);
+        }
     }
 
     public static Origin getDefaultOrigin() {

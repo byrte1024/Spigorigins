@@ -1,0 +1,8 @@
+Origins:
+  BlazeBorn: true
+  Fox: true
+  Goblin: true
+  Void: true
+  Werewolf: true
+Settings:
+  OriginSwitchingCost: 30
