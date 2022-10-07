@@ -21,6 +21,7 @@ public class Fox extends Origin {
         if(player.getSaturation()>10){
             player.setSaturation(10);
         }
+
     }
 
     @Override

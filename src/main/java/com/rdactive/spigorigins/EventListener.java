@@ -1,6 +1,5 @@
 package com.rdactive.spigorigins;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -18,7 +17,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Objects;
 
 public class EventListener implements Listener {
@@ -79,11 +77,11 @@ public class EventListener implements Listener {
                 Asigner asigner = OriginManager.getAsigner(player,true);
                 if(asigner==null){
                     asigner=OriginManager.createAsignerFromConfig(player);
+
                     if(asigner==null){
                         player.kickPlayer(ChatColor.RED+Spigorigins.mainConf.getString("Messages.AsignerGenFailed"));
                         return;
                     }
-
                 }
                 if(Objects.equals(origin.getID(), asigner.getOrigin())){
                     player.sendMessage(ChatColor.RED + Spigorigins.mainConf.getString("Messages.OriginSamePick"));
@@ -148,9 +146,7 @@ public class EventListener implements Listener {
     @EventHandler
     public void WorldSaveEvent(WorldSaveEvent event) throws IOException {
         //Bukkit.broadcastMessage(ChatColor.GRAY+""+ChatColor.ITALIC+"Saving config...");
-        OriginManager.getAsignerList().forEach(asigner -> {
-            Spigorigins.mainData.set(asigner.getPlayerName()+".origin",asigner.getOrigin());
-        });
+        OriginManager.getAsignerList().forEach(asigner -> Spigorigins.mainData.set(asigner.getPlayerName()+".origin",asigner.getOrigin()));
         Spigorigins.mainData.save(Spigorigins.mainDataFile);
         Spigorigins.mainConf.save(Spigorigins.mainConfFile);
     }

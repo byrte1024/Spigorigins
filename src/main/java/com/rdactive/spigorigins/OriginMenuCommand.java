@@ -41,4 +41,6 @@ public class OriginMenuCommand implements CommandExecutor {
     public OriginMenuCommand(Plugin plugin){
         this.plugin=plugin;
     }
+
+
 }

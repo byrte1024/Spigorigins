@@ -8,9 +8,9 @@ import org.bukkit.entity.Player;
 import java.util.Arrays;
 
 public class Bee extends Origin {
-    public Bee() {
-        super("Bee","BEE","The wonderful flying creatures of the forest. they eat flowers and can fly high above", Arrays.asList(new String[]{"can fly 20 blocks above the ground"}), Arrays.asList(new String[]{"can only eat flowers","has only 6 hearts"," "}), Material.BLAZE_POWDER,' ');
-    }
+        public Bee() {
+            super("Bee","BEE","The wonderful flying creatures of the forest. they eat flowers and can fly high above", Arrays.asList(new String[]{"can fly 20 blocks above the ground"}), Arrays.asList(new String[]{"can only eat flowers","has only 6 hearts"," "}), Material.BLAZE_POWDER,' ');
+        }
 
     @Override
     public void applyEffects(Player player, Asigner asigner) {

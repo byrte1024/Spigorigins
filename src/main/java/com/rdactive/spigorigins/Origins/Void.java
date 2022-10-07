@@ -14,7 +14,7 @@ import java.util.Objects;
 
 public class Void extends Origin {
     public Void(){
-        super("V.O.I.D","VOID","These creatures are a scientific experiment made by [REDACTED] for [CENSORSHIP] because of [TOP SECRET]", Arrays.asList("50% faster","50% stronger","5 more hearts","Death by void wont kill you"), Collections.singletonList("Permanent blindness"), Material.BLACK_CONCRETE_POWDER,' ');
+            super("V.O.I.D","VOID","These creatures are a scientific experiment made by [REDACTED] for [CENSORSHIP] because of [TOP SECRET]", Arrays.asList("50% faster","50% stronger","5 more hearts","Death by void wont kill you"), Collections.singletonList("Permanent blindness"), Material.BLACK_CONCRETE_POWDER,' ');
     }
 
     @Override
