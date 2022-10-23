@@ -19,6 +19,9 @@ public class Void extends Origin {
 
     @Override
     public void applyEffects(Player player, Asigner asigner) {
+        if(player==null){
+            return;
+        }
         Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)).setBaseValue(0.15);
         Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)).setBaseValue(1.5);
         Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(30);

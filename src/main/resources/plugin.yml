@@ -7,4 +7,4 @@ commands:
   origin:
     description: Opens the origin menu.
     usage: /origin
-    permission: 0
+    permission: origin.select

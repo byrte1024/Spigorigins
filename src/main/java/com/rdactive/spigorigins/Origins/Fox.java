@@ -17,6 +17,9 @@ public class Fox extends Origin {
 
     @Override
     public void applyEffects(Player player, Asigner asigner) {
+        if(player==null){
+            return;
+        }
         Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)).setBaseValue(0.175);
         if(player.getSaturation()>10){
             player.setSaturation(10);

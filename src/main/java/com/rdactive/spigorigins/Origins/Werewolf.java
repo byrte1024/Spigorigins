@@ -17,6 +17,9 @@ public class Werewolf extends Origin {
 
     @Override
     public void applyEffects(Player player, Asigner asigner) {
+        if(player==null){
+            return;
+        }
         long time = player.getWorld().getTime();
 
         boolean night = time < 12300 || time > 23850;

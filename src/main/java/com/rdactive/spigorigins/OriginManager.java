@@ -224,56 +224,93 @@ public class OriginManager {
      * @param mainOR the main Origin plugin (Spigorigins)
      */
     public static void openGUI(Player player, Plugin mainOR){
+        //Create the inventory
         Inventory inventory= Bukkit.createInventory(player,27,"Select origin");
+        //Fetch player asigner
         Asigner asigner = getAsigner(player,true);
+        //Fetch the list of all origins
         List<Origin> originList=getOriginList();
+        //Create a new ItemStack for the BG of the inventory
         ItemStack empty = new ItemStack(Material.BLACK_STAINED_GLASS_PANE,1);
-        Objects.requireNonNull(empty.getItemMeta()).setCustomModelData(100);
+        //Get the meta for the item
+        ItemMeta emptyMeta = empty.getItemMeta();
+        //Make sure meta isnt null!!
+        assert emptyMeta != null;
+        //Set CUSTOMMODELDATA to 100 for click detection
+        emptyMeta.setCustomModelData(100);
+        //Apply the new meta
+        empty.setItemMeta(emptyMeta);
 
+
+        //Loop through the inventory
         for(int i = 0; i < inventory.getSize(); i++){
+            //Check if the index fits in the origin list
             if(originList.size()>i){
+                //Create a new ItemStack for the origin
                 ItemStack itmOrg = new ItemStack(originList.get(i).getIcon());
+                //Get itemMeta
                 ItemMeta itemMeta = itmOrg.getItemMeta();
+                //Make sure meta isnt null!
                 assert itemMeta != null;
+                //Change the display name to state the origin
                 itemMeta.setDisplayName(ChatColor.GOLD+"<==- "+ChatColor.GREEN+originList.get(i).getVisibleName()+ChatColor.GREEN+" -==>");
+                //Create a string[] to store the object LORE
                 List<String> lore = new ArrayList<>();
+                //Add the origin ID for parsing
                 lore.add(originList.get(i).getID());
+                //Loop through advantages
                 for(int l = 0; l < originList.get(i).getAdvantages().size(); l++){
+                    //Add the advantage to the lore
                     lore.add(ChatColor.BOLD+""+ChatColor.GREEN+"+ "+ChatColor.RESET+ChatColor.WHITE+originList.get(i).getAdvantages().get(l));
                 }
+                //Loop through disadvantages
                 for(int l = 0; l < originList.get(i).getDisadvantages().size(); l++){
+                    //Add the disadvantage to the lore
                     lore.add(ChatColor.BOLD+""+ChatColor.RED+"- "+ChatColor.RESET+ChatColor.WHITE+originList.get(i).getDisadvantages().get(l));
                 }
 
-
+                //Set the lore to the meta
                 itemMeta.setLore(lore);
+                //Set CUSTOMMODELDATA to 101 for click detection
                 itemMeta.setCustomModelData(101);
-
+                //Set the meta
                 itmOrg.setItemMeta(itemMeta);
                 inventory.setItem(i,itmOrg);
             }
             else{
+                //If not set to the background item
                 inventory.setItem(i,empty);
             }
 
         }
-        ItemStack itmOrg = new ItemStack( getDefaultOrigin().getIcon());
+        //Create a new ItemStack for the default origin
+        ItemStack itmOrg = new ItemStack(getDefaultOrigin().getIcon());
+        //Get itemMeta
         ItemMeta itemMeta = itmOrg.getItemMeta();
+        //Make sure meta isnt null!
         assert itemMeta != null;
-        itemMeta.setDisplayName(ChatColor.GOLD+"<==- "+ChatColor.GREEN+ getDefaultOrigin().getVisibleName()+ChatColor.GREEN+" -==>");
+        //Change the display name to state the origin
+        itemMeta.setDisplayName(ChatColor.GOLD+"<==- "+ChatColor.GREEN+getDefaultOrigin().getVisibleName()+ChatColor.GREEN+" -==>");
+        //Create a string[] to store the object LORE
         List<String> lore = new ArrayList<>();
+        //Add the origin ID for parsing
         lore.add(getDefaultOrigin().getID());
+        //Loop through advantages
         for(int l = 0; l < getDefaultOrigin().getAdvantages().size(); l++){
-            lore.add(ChatColor.BOLD+""+ChatColor.GREEN+"+ "+ChatColor.RESET+ChatColor.WHITE+ getDefaultOrigin().getAdvantages().get(l));
+            //Add the advantage to the lore
+            lore.add(ChatColor.BOLD+""+ChatColor.GREEN+"+ "+ChatColor.RESET+ChatColor.WHITE+getDefaultOrigin().getAdvantages().get(l));
         }
+        //Loop through disadvantages
         for(int l = 0; l < getDefaultOrigin().getDisadvantages().size(); l++){
-            lore.add(ChatColor.BOLD+""+ChatColor.GREEN+"+ "+ChatColor.RESET+ChatColor.WHITE+ getDefaultOrigin().getDisadvantages().get(l));
+            //Add the disadvantage to the lore
+            lore.add(ChatColor.BOLD+""+ChatColor.RED+"- "+ChatColor.RESET+ChatColor.WHITE+getDefaultOrigin().getDisadvantages().get(l));
         }
 
-
+        //Set the lore to the meta
         itemMeta.setLore(lore);
+        //Set CUSTOMMODELDATA to 101 for click detection
         itemMeta.setCustomModelData(101);
-
+        //Set the meta
         itmOrg.setItemMeta(itemMeta);
         inventory.setItem(26,itmOrg);
 

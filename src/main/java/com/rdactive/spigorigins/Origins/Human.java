@@ -23,7 +23,6 @@ public class Human extends Origin {
 
     @Override
     public void applyEffects(Player player, Asigner asigner) {
-
     }
 
     @Override

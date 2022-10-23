@@ -5,14 +5,17 @@ import com.rdactive.spigorigins.Origin;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
 
-public class Goblin extends Origin {
-    public Goblin(){
-        super("Goblin","GOBLIN","these green creatures live in the mountains, they may be small. but are swift. and strong", Arrays.asList("50% faster","25% stronger"), Collections.singletonList("2 less hearts"), Material.GREEN_DYE,' ');
+public class Avian extends Origin {
+
+    public Avian() {
+        super("Avian","AVIAN","A flying winged creature that lives in the clouds",Arrays.asList("Permanent slow falling","10% faster"), Collections.singletonList("Cant eat meat"), Material.FEATHER,' ');
     }
 
     @Override
@@ -20,9 +23,11 @@ public class Goblin extends Origin {
         if(player==null){
             return;
         }
-        Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)).setBaseValue(0.15);
-        Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE)).setBaseValue(1.25);
-        Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_MAX_HEALTH)).setBaseValue(16);
+        if(!player.isSneaking()){
+            player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING,20,1));
+            Objects.requireNonNull(player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)).setBaseValue(0.11);
+        }
+
     }
 
     @Override

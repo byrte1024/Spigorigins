@@ -7,8 +7,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.world.WorldSaveEvent;
@@ -17,6 +19,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Objects;
 
 public class EventListener implements Listener {
@@ -142,6 +145,68 @@ public class EventListener implements Listener {
                 player.addPotionEffect(new PotionEffect(PotionEffectType.POISON,80,1));
             }
         }
+        if(Objects.equals(asigner.getOrigin(), "AVIAN")){
+            switch (event.getItem().getType()){
+                case PORKCHOP:
+                case MUTTON:
+                case BEEF:
+                case COD:
+                case SALMON:
+                case CHICKEN:
+                case COOKED_BEEF:
+                case COOKED_CHICKEN:
+                case COOKED_MUTTON:
+                case COOKED_SALMON:
+                case COOKED_COD:
+                case COOKED_PORKCHOP:
+                {
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.POISON,80,1));
+                    event.setCancelled(true);
+                    break;
+                }
+            }
+        }
+        if(Objects.equals(asigner.getOrigin(), "BEE")){
+            event.setCancelled(true);
+            player.sendMessage(ChatColor.RED+"Your a bee! you cant eat food! you have to eat flowers!");
+        }
+    }
+    @EventHandler
+    public void ItemInteract(PlayerInteractEvent event){
+        assert event.getItem() != null;
+        assert event.getAction()== Action.RIGHT_CLICK_AIR||event.getAction()== Action.RIGHT_CLICK_BLOCK;
+        Player player = event.getPlayer();
+        Asigner asigner = OriginManager.getAsigner(player,true);
+        assert asigner != null;
+        if(Objects.equals(asigner.getOrigin(), "BEE")){
+            boolean ate=false;
+            switch (event.getItem().getType()){
+                case DANDELION:
+                case BLUE_ORCHID:
+                case POPPY:
+                case AZURE_BLUET:
+                case ALLIUM:
+                case RED_TULIP:
+                case ORANGE_TULIP:
+                case WHITE_TULIP:
+                case OXEYE_DAISY:
+                case PINK_TULIP:
+                case PEONY:
+                case ROSE_BUSH:
+                case LILAC:
+                case SUNFLOWER:
+                case CORNFLOWER:
+                case LILY_OF_THE_VALLEY:
+                case WITHER_ROSE: {
+                    ate=true;
+                    break;}
+            }
+            if(player.getFoodLevel()<20&&ate){
+                consumeItem(player,1,event.getItem().getType());
+                player.setFoodLevel(player.getFoodLevel()+1);
+            }
+        }
+
     }
     @EventHandler
     public void WorldSaveEvent(WorldSaveEvent event) throws IOException {
@@ -149,5 +214,34 @@ public class EventListener implements Listener {
         OriginManager.getAsignerList().forEach(asigner -> Spigorigins.mainData.set(asigner.getPlayerName()+".origin",asigner.getOrigin()));
         Spigorigins.mainData.save(Spigorigins.mainDataFile);
         Spigorigins.mainConf.save(Spigorigins.mainConfFile);
+    }
+
+
+    //Credit to `superpeanut911` on spigot forums ty so much for this function m8
+    public void consumeItem(Player player, int count, Material mat) {
+        Map<Integer, ? extends ItemStack> ammo = player.getInventory().all(mat);
+
+        int found = 0;
+        for (ItemStack stack : ammo.values())
+            found += stack.getAmount();
+        if (count > found)
+            return;
+
+        for (Integer index : ammo.keySet()) {
+            ItemStack stack = ammo.get(index);
+
+            int removed = Math.min(count, stack.getAmount());
+            count -= removed;
+
+            if (stack.getAmount() == removed)
+                player.getInventory().setItem(index, null);
+            else
+                stack.setAmount(stack.getAmount() - removed);
+
+            if (count <= 0)
+                break;
+        }
+
+        player.updateInventory();
     }
 }
